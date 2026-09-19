@@ -1,4 +1,3 @@
-// src/app/(dashboard)/dashboard/media/page.jsx
 import MediaManager from "./_components/MediaManager";
 import { getMediaAction } from "@/lib/actions/media.actions";
 import { cookies } from "next/headers";

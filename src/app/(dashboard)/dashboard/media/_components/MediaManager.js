@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useRef, useTransition } from "react";
 import { createMediaAction, deleteMediaAction } from "@/lib/actions/media.actions";
 import Image from "next/image";
-
+import DeleteFilledIcon from '@iconify-react/ant-design/delete-filled';
 export default function MediaManager({ initialMedia }) {
   const formRef = useRef(null);
 
@@ -89,7 +89,7 @@ export default function MediaManager({ initialMedia }) {
                   width={64} height={64}
                   src={item.url}
                   alt="عکس"
-                   loading="eager"
+                  loading="eager"
                   className="aspect-video w-full object-cover bg-gray-200"
                 />
 
@@ -105,11 +105,7 @@ export default function MediaManager({ initialMedia }) {
                     onClick={() => handleDelete(item._id)}
                     title="حذف عکس"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M3 6h18"></path>
-                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                    </svg>
+                    <DeleteFilledIcon height="1em" />
                   </button>
                 </div>
               </li>

@@ -3,6 +3,8 @@
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { signOutUser } from "@/lib/api/auth";
+import LinkOutIcon from '@iconify-react/akar-icons/link-out'
+import SignOutIcon from '@iconify-react/akar-icons/sign-out';
 
 export default function DashboardHeader() {
   const pathname = usePathname();
@@ -38,7 +40,7 @@ export default function DashboardHeader() {
 
       <div className="flex items-center gap-4">
         <Link href="/" className="hidden sm:flex text-sm text-teal-600 hover:text-teal-700 bg-teal-50 hover:bg-teal-100 px-3 py-1.5 rounded-lg transition-colors font-medium items-center gap-1.5">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></svg>
+          <LinkOutIcon height="1em" />
           صفحه اصلی
         </Link>
 
@@ -49,8 +51,7 @@ export default function DashboardHeader() {
           className="text-gray-500 hover:text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors"
           title="خروج از حساب"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" x2="9" y1="12" y2="12" /></svg>
-        </button>
+          <SignOutIcon height="2em" />        </button>
       </div>
     </header>
   );

@@ -14,7 +14,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-full md:w-64 bg-white shadow-sm border-l border-gray-100 min-h-[calc(100vh-64px)] p-6">
+    <aside className="w-full md:w-64 bg-white shadow-sm border-l border-gray-100 min-h-[calc(20vh-64px)] p-6">
       <div className="mb-8 hidden md:block">
         <h2 className="text-xl font-bold text-gray-800">پنل مدیریت ونیکسر</h2>
       </div>
