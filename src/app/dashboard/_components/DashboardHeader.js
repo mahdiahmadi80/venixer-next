@@ -15,7 +15,7 @@ export default function DashboardHeader() {
     if (pathname.includes("/categories")) return "مدیریت دسته‌بندی‌ها";
     if (pathname.includes("/products")) return "مدیریت محصولات";
     if (pathname.includes("/media")) return "فایل ها و رسانه ها";
-    return " (داشبورد)";
+    return " داشبورد";
   };
 
   const handleLogout = async () => {
@@ -43,7 +43,6 @@ export default function DashboardHeader() {
           <LinkOutIcon height="1em" />
           صفحه اصلی
         </Link>
-
         <div className="w-px h-6 bg-gray-200 hidden sm:block"></div>
         <button
           onClick={handleLogout}
