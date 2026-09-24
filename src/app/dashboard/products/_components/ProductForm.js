@@ -1,7 +1,8 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
-import { createProductAction, updateProductAction } from "@/lib/actions/product.actions";
+import { useQuery } from "@tanstack/react-query";
+import { createProductAction, updateProductAction, fetchMediaList } from "@/lib/actions/product.actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -12,9 +13,14 @@ export default function ProductForm({ productToEdit, categories, brands }) {
   const isEditMode = !!productToEdit;
 
   const initialMedia = isEditMode && productToEdit?.media?.length
-    ? productToEdit.media.map((m) => m._id || m)
-    : [""];
-  const [mediaList, setMediaList] = useState(initialMedia);
+    ? productToEdit.media.map((m) => (typeof m === "string" ? m : m._id))
+    : [];
+  const [selectedMedia, setSelectedMedia] = useState(initialMedia);
+
+  const { data: mediaList = [], isLoading: mediaLoading } = useQuery({
+    queryKey: ["media"],
+    queryFn: fetchMediaList,
+  });
 
   const actionToRun = isEditMode
     ? updateProductAction.bind(null, productToEdit._id)
@@ -27,19 +33,17 @@ export default function ProductForm({ productToEdit, categories, brands }) {
   useEffect(() => {
     if (state?.success) {
       formRef.current?.reset();
-      setMediaList([""]);
+      setSelectedMedia([]);
       if (isEditMode) {
         router.push("/dashboard/products");
       }
     }
   }, [state?.success, isEditMode, router]);
 
-  const addMediaField = () => setMediaList([...mediaList, ""]);
-  const removeMediaField = (index) => setMediaList(mediaList.filter((_, i) => i !== index));
-  const handleMediaChange = (index, value) => {
-    const newList = [...mediaList];
-    newList[index] = value;
-    setMediaList(newList);
+  const toggleMedia = (id) => {
+    setSelectedMedia((prev) =>
+      prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id]
+    );
   };
 
   return (
@@ -123,37 +127,66 @@ export default function ProductForm({ productToEdit, categories, brands }) {
         </div>
 
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-          <label className="block text-sm font-medium text-black mb-3">گالری تصاویر (ID رسانه‌ها)</label>
-          <div className="space-y-2">
-            {mediaList.map((mediaId, index) => (
-              <div key={index} className="flex gap-2">
-                <input
-                  type="text"
-                  name="media"
-                  value={mediaId}
-                  onChange={(e) => handleMediaChange(index, e.target.value)}
-                  dir="ltr"
-                  className="w-full text-black px-4 py-2 border-gray-300 border rounded-lg text-left"
-                />
-                {mediaList.length > 1 && (
+          <div className="flex items-center justify-between mb-3">
+            <label className="block text-sm font-medium text-black">
+              گالری تصاویر
+            </label>
+            <span className="text-xs text-gray-500">
+              {selectedMedia.length} تصویر انتخاب شده
+            </span>
+          </div>
+
+          {selectedMedia.map((id) => (
+            <input key={id} type="hidden" name="media" value={id} />
+          ))}
+
+          {mediaLoading ? (
+            <div className="grid grid-cols-4 gap-3">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="aspect-square bg-gray-200 rounded-lg animate-pulse" />
+              ))}
+            </div>
+          ) : mediaList.length === 0 ? (
+            <p className="text-sm text-gray-500 text-center py-6">
+              هنوز رسانه‌ای ثبت نشده است. از بخش{" "}
+              <Link href="/dashboard/media" className="text-blue-600 hover:underline">
+                مدیریت رسانه‌ها
+              </Link>{" "}
+              اضافه کنید.
+            </p>
+          ) : (
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 max-h-80 overflow-y-auto p-1">
+              {mediaList.map((media) => {
+                const isSelected = selectedMedia.includes(media._id);
+                return (
                   <button
                     type="button"
-                    onClick={() => removeMediaField(index)}
-                    className="px-3 bg-white border border-red-200 text-red-500 rounded-lg hover:bg-red-50 transition-colors text-sm"
+                    key={media._id}
+                    onClick={() => toggleMedia(media._id)}
+                    className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                      isSelected
+                        ? "border-blue-500 ring-2 ring-blue-200"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
                   >
-                    حذف
+                    <img
+                      src={media.url}
+                      alt=""
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    {isSelected && (
+                      <div className="absolute inset-0 bg-blue-500/20 flex items-center justify-center">
+                        <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                          ✓
+                        </span>
+                      </div>
+                    )}
                   </button>
-                )}
-              </div>
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={addMediaField}
-            className="mt-3 text-sm text-blue-600 font-medium hover:text-blue-700"
-          >
-            + افزودن عکس دیگر
-          </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         <div className="flex gap-2 mt-4">

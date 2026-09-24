@@ -172,3 +172,14 @@ export async function deleteProduct(id) {
 
   return response.json();
 }
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+export async function fetchMediaList() {
+  const res = await fetch(`${API_URL}/api/media`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("خطا در دریافت رسانه‌ها");
+  const json = await res.json();
+  return json.data;
+}

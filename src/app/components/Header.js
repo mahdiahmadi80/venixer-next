@@ -60,45 +60,45 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-4">
-            {sessionLoading ? (
-              <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
-            ) : isAuth ? (
-              <div className="flex items-center gap-3">
-                <span className="text-gray-700 hidden sm:inline-block text-sm font-medium border-l border-gray-200 pl-3">
+  <Link
+    href="/dashboard"
+    className="bg-gray-800 hover:bg-gray-900 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm"
+  >
+    داشبورد
+  </Link>
 
-                </span>
+  {sessionLoading ? (
+    <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+  ) : isAuth ? (
+    <div className="flex items-center gap-3">
+      <span className="text-gray-700 hidden sm:inline-block text-sm font-medium border-l border-gray-200 pl-3">
+      </span>
 
-                <Link
-                  href="/dashboard"
-                  className="bg-gray-800 hover:bg-gray-900 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm"
-                >
-                  داشبورد
-                </Link>
-                <button
-                  onClick={() => logoutMutation.mutate()}
-                  className="text-red-500 hover:text-white hover:bg-red-500 border border-red-500 text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-                  disabled={logoutMutation.isPending}
-                >
-                  {logoutMutation.isPending ? "..." : "خروج"}
-                </button>
-              </div>
-            ) : (
-              <div className="flex gap-3">
-                <Link
-                  href="/sign-in"
-                  className="text-blue-600 font-medium px-4 py-2 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
-                >
-                  ورود
-                </Link>
-                <Link
-                  href="/sign-up"
-                  className="bg-blue-600 text-white font-medium px-4 py-2 hover:bg-blue-700 rounded-lg transition-colors shadow-sm"
-                >
-                  ثبت‌نام
-                </Link>
-              </div>
-            )}
-          </div>
+      <button
+        onClick={() => logoutMutation.mutate()}
+        className="text-red-500 hover:text-white hover:bg-red-500 border border-red-500 text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+        disabled={logoutMutation.isPending}
+      >
+        {logoutMutation.isPending ? "..." : "خروج"}
+      </button>
+    </div>
+  ) : (
+    <div className="flex gap-3">
+      <Link
+        href="/sign-in"
+        className="text-blue-600 font-medium px-4 py-2 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+      >
+        ورود
+      </Link>
+      <Link
+        href="/sign-up"
+        className="bg-blue-600 text-white font-medium px-4 py-2 hover:bg-blue-700 rounded-lg transition-colors shadow-sm"
+      >
+        ثبت‌نام
+      </Link>
+    </div>
+  )}
+</div>
 
         </div>
       </div>
